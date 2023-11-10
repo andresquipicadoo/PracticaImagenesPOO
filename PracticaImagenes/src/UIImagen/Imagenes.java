@@ -15,7 +15,7 @@ public class Imagenes extends JFrame {
     private List<Pintor> pintores;
     private Timer temporizador;
 
-    //Este es el método principal para ejecutar la aplicación
+    //Este es el método principal encargado ejecutar la aplicación
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -30,8 +30,8 @@ public class Imagenes extends JFrame {
     }
 
     public Imagenes() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Configura la operación de cierre por defecto
-        setBounds(100, 100, 800, 600); // Establece el tamaño y la posición de la ventana
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Esta linea configura la operación de cierre por defecto
+        setBounds(100, 100, 800, 600); // Esta linea establece el tamaño y la posición de la ventana
         contentPane = new JPanel(); // Esta linea se encarga de crear un nuevo panel
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); //  Esta linea se encarga de establecer el borde del panel
         setContentPane(contentPane); // Esta linea se encarga de establecer el panel como el panel de contenido de la ventana
@@ -126,7 +126,7 @@ class Pintor {
     }
 
     /**
-     * Método para generar circulos aleatorios.
+     * Método encargado de generar circulos aleatorios.
      */
     private pintandoElemento cearCirculosAleatorios() {
         return g2d -> {
@@ -140,7 +140,7 @@ class Pintor {
     }
 
     /**
-     * Método para generar poligonos aleatorios.
+     * Método encargado de generar poligonos aleatorios.
      */
     private pintandoElemento crearPoligonosaleatorios() {
         return g2d -> {
@@ -160,7 +160,7 @@ class Pintor {
     }
 
     /**
-     * Método para generar rayas aleatorias.
+     * Método encargado de generar rayas aleatorias.
      */
     private pintandoElemento crearRayasAleatorias() {
         return g2d -> {
@@ -173,7 +173,7 @@ class Pintor {
     }
 
     /**
-     * Método para obtener una posición aleatoria.
+     * Método encargado de obtener una posición aleatoria.
      */
     private int PosicionRandom(int max) {
         Random random = new Random();
@@ -181,7 +181,7 @@ class Pintor {
     }
 
     /**
-     * Método para obtener un tamaño aleatorio.
+     * Método encargado de obtener un tamaño aleatorio.
      */
     private int TamRandom(int min, int max) {
         Random random = new Random();
@@ -189,7 +189,7 @@ class Pintor {
     }
 
     /**
-     * Método para obtener el número de lados aleatorio de un polígono.
+     * Método encargado de obtener el número de lados aleatorio de un polígono.
      */
     private int LadosRandom(int min, int max) {
         Random random = new Random();
@@ -197,10 +197,11 @@ class Pintor {
     }
 
     /**
-     * Método para obtener un color aleatorio.
+     * Método encargado de obtener un color aleatorio.
      */
     private Color obtenerColorAleatorio() {
         Random random = new Random();
-        return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // Devuelve un color aleatorio
+        return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // Devuelve un color aleatorio para cada figura 
+        // ya sean circulos,poligonos o rayas.
     }
 }
