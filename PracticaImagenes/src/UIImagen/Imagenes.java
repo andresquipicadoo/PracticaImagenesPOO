@@ -1,3 +1,4 @@
+
 package UIImagen;
 
 import javax.swing.*;
@@ -9,7 +10,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+ //El patron Strategy es usado en la clase pintor 
+//El patron obserber se usa en el temporizador en la clase imagenes
+// El factory patern se usa en los metodos de gernerar circulos, poligonos y rayas aleatorias
+//El iterator patern se usa en List<Pintor> pintores) donde actúa como una colección y
+//tambien se usa en el bucle for en el método actionPerformed itera sobre los pintores
 public class Imagenes extends JFrame {
     private JPanel contentPane;
     private List<Pintor> pintores;
