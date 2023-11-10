@@ -12,18 +12,18 @@ import java.util.Random;
 
 public class Imagenes extends JFrame {
     private JPanel contentPane;
-    private List<Painter> painters;
-    private Timer timer;
+    private List<Pintor> pintores;
+    private Timer temporizador;
 
     //Este es el método principal para ejecutar la aplicación
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Imagenes frame = new Imagenes(); // Crea una nueva instancia de UImagenes
-                    frame.setVisible(true); // Hace visible la ventana de la aplicación
+                    Imagenes frame = new Imagenes(); // Esta linea crea una nueva instancia de UImagenes
+                    frame.setVisible(true); // Se encarga de hacer visible la ventana de la aplicación
                 } catch (Exception e) {
-                    e.printStackTrace(); // Imprime la pila de llamadas si ocurre una excepción
+                    e.printStackTrace(); //Se encarga de imprimir la pila de llamadas si ocurre una excepción
                 }
             }
         });
@@ -32,41 +32,41 @@ public class Imagenes extends JFrame {
     public Imagenes() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Configura la operación de cierre por defecto
         setBounds(100, 100, 800, 600); // Establece el tamaño y la posición de la ventana
-        contentPane = new JPanel(); // Crea un nuevo panel
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); // Establece el borde del panel
-        setContentPane(contentPane); // Establece el panel como el panel de contenido de la ventana
-        contentPane.setLayout(new BorderLayout(0, 0)); // Establece el diseño del panel
+        contentPane = new JPanel(); // Esta linea se encarga de crear un nuevo panel
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); //  Esta linea se encarga de establecer el borde del panel
+        setContentPane(contentPane); // Esta linea se encarga de establecer el panel como el panel de contenido de la ventana
+        contentPane.setLayout(new BorderLayout(0, 0)); // Esta linea se encarga de establecer el diseño del panel
 
-        // Crea una lista de pintores
-        painters = new ArrayList<>();
-        painters.add(new Painter("Circles", PaintingType.CIRCLES)); // Agrega un pintor de círculos a la lista
-        painters.add(new Painter("Polygons", PaintingType.POLYGONS)); // Agrega un pintor de polígonos a la lista
-        painters.add(new Painter("Stripes", PaintingType.STRIPES)); // Agrega un pintor de rayas a la lista
+        // Estas lineas crean una lista de pintores
+        pintores = new ArrayList<>();
+        pintores.add(new Pintor("Circulos", PintadoTipoFigura.CIRCULOS)); //Esta linea agrega un pintor de círculos a la lista
+        pintores.add(new Pintor("Poligonos", PintadoTipoFigura.POLIGONOS)); //Esta linea agrega un pintor de polígonos a la lista
+        pintores.add(new Pintor("Rayas", PintadoTipoFigura.RAYAS)); //Esta linea agrega un pintor de rayas a la lista
 
-        // Configura un temporizador para disparar a los pintores
-        timer = new Timer(3000, new ActionListener() {
+        //Esta linea configura un temporizador para disparar a los pintores
+        temporizador = new Timer(3000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for (Painter painter : painters) { // Para cada pintor en la lista
-                    painter.paintRandomImage(); // Pide que pinten una imagen aleatoria
+                for (Pintor pintor : pintores) { //  Esta linea es para cada pintor en la lista
+                    pintor.pintarImagenRandom(); //  Esta linea se encarga de pedir que pinten una imagen aleatoria
                 }
             }
         });
-        timer.start(); // Inicia el temporizador
+        temporizador.start(); //  Esta linea se encarga de inicializar el temporizador
     }
 }
 
-enum PaintingType {
-    CIRCLES,
-    POLYGONS,
-    STRIPES
+enum PintadoTipoFigura {
+    CIRCULOS,
+    POLIGONOS,
+    RAYAS
 }
 
-class PaintingCanvas extends JPanel {
+class PintarCanvas extends JPanel {
     private BufferedImage canvas;
 
-    public PaintingCanvas(int width, int height) {
+    public PintarCanvas(int ancho, int altura) {
     	// Esta linea crea un lienzo inicial
-        canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        canvas = new BufferedImage(ancho, altura, BufferedImage.TYPE_INT_RGB);
     }
 
     @Override
@@ -75,122 +75,131 @@ class PaintingCanvas extends JPanel {
         g.drawImage(canvas, 0, 0, this);
     }
 
-    public void paintElement(PaintingElement element) {
+    public void pintarElemento(pintandoElemento elemento) {
         Graphics2D g2d = canvas.createGraphics();
-        element.paint(g2d);
+        elemento.pintar(g2d);
         g2d.dispose();
         repaint();
     }
 }
 
-interface PaintingElement {
-    void paint(Graphics2D g2d);
+interface pintandoElemento {
+    void pintar(Graphics2D g2d);
 }
 
-class Painter {
-    private String name;
-    private PaintingType paintingType;
-    private PaintingCanvas canvas;
+class Pintor {
+    private String nombre;
+    private PintadoTipoFigura tipoPintura;
+    private PintarCanvas canvas;
 
-    public Painter(String name, PaintingType paintingType) {
-        this.name = name;
-        this.paintingType = paintingType;
-        this.canvas = new PaintingCanvas(400, 300); // Define el tamaño de la ventana individual
+    public Pintor(String nomb, PintadoTipoFigura pintadoTipoFigura) {
+        this.nombre = nomb;
+        this.tipoPintura = pintadoTipoFigura;
+        this.canvas = new PintarCanvas(400, 300); // Esta linea se encarga de definir  el tamaño de la ventana individual
     }
 
-    public void paintRandomImage() {
+    public void pintarImagenRandom() {
         // Decide qué elemento pintar basándose en el tipo de pintura del pintor
-        PaintingElement element = null;
-        switch (paintingType) {
-            case CIRCLES:
-                element = createRandomCircles(); // Crea un círculo aleatorio para pintar
+        pintandoElemento elemento = null;
+        switch (tipoPintura) {
+            case CIRCULOS:
+                elemento = cearCirculosAleatorios(); // Esta linea crea un círculo aleatorio para pintar
                 break;
-            case POLYGONS:
-                element = createRandomPolygons(); // Crea un polígono aleatorio para pintar
+            case POLIGONOS:
+                elemento = crearPoligonosaleatorios(); // Esta linea crea  un polígono aleatorio para pintar
                 break;
-            case STRIPES:
-                element = createRandomStripes(); // Crea unas rayas aleatorias para pintar
+            case RAYAS:
+                elemento = crearRayasAleatorias(); // Esta linea crea  unas rayas aleatorias para pintar
                 break;
         }
 
-        if (element != null) {
-            JFrame frame = new JFrame(name); // Crea una nueva ventana para el pintor
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Configura la operación de cierre por defecto
-            frame.setBounds(100, 100, 400, 300); // Establece el tamaño y la posición de la ventana
-            frame.add(canvas); // Añade el lienzo del pintor a la ventana
-            frame.setVisible(true); // Hace visible la ventana del pintor
+        if (elemento != null) {
+            JFrame frame = new JFrame(nombre); // Esta linea crea  una nueva ventana para el pintor
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Esta linea configura la operación de cierre por defecto
+            frame.setBounds(100, 100, 400, 300); // Esta linea establece el tamaño y la posición de la ventana
+            frame.add(canvas); // Esta linea añade el lienzo del pintor a la ventana
+            frame.setVisible(true); // Esta linea  hace  que sea visible la ventana del pintor
 
-            // Pinta el elemento en el lienzo del pintor
-            canvas.paintElement(element);
+            //elemento en el lienzo del pintor
+            canvas.pintarElemento(elemento);
         }
     }
 
-    private PaintingElement createRandomCircles() {
+    /**
+     * Método para generar circulos aleatorios.
+     */
+    private pintandoElemento cearCirculosAleatorios() {
         return g2d -> {
             Random random = new Random();
-            g2d.setColor(getRandomColor()); // Establece el color del círculo
-            int x = randomPosition(400); // Establece la posición x del círculo
-            int y = randomPosition(300); // Establece la posición y del círculo
-            int size = randomSize(10, 50); // Establece el tamaño del círculo
-            g2d.fillOval(x, y, size, size); // Dibuja el círculo
+            g2d.setColor(obtenerColorAleatorio()); // Esta linea establece el color del círculo
+            int x = PosicionRandom(400); // Esta linea establece la posición x del círculo
+            int y = PosicionRandom(300); //Esta linea  establece la posición y del círculo
+            int tam = TamRandom(10, 50); // Esta linea establece el tamaño del círculo
+            g2d.fillOval(x, y, tam, tam); // Dibuja el círculo
         };
     }
 
-    private PaintingElement createRandomPolygons() {
+    /**
+     * Método para generar poligonos aleatorios.
+     */
+    private pintandoElemento crearPoligonosaleatorios() {
         return g2d -> {
             Random random = new Random();
-            g2d.setColor(getRandomColor()); // Establece el color del polígono
-            int sides = randomSides(3, 8); // Establece el número de lados del polígono
-            int[] xPoints = new int[sides]; // Inicializa los puntos x del polígono
-            int[] yPoints = new int[sides]; // Inicializa los puntos y del polígono
+            g2d.setColor(obtenerColorAleatorio()); // Esta linea establece el color del polígono
+            int lados = LadosRandom(3, 8); // Esta linea estanblece el número de lados del polígono
+            int[] xPoints = new int[lados]; // Esta linea inicializa los puntos x del polígono
+            int[] yPoints = new int[lados]; // Esta linea inicializa los puntos y del polígono
 
-            for (int i = 0; i < sides; i++) {
-                xPoints[i] = randomPosition(400); // Establece la posición x del punto
-                yPoints[i] = randomPosition(300); // Establece la posición y del punto
+            for (int i = 0; i < lados; i++) {
+                xPoints[i] = PosicionRandom(400); //  Esta linea establece la posición x del punto
+                yPoints[i] = PosicionRandom(300); //  Esta linea establece la posición y del punto
             }
 
-            g2d.fillPolygon(xPoints, yPoints, sides); // Dibuja el polígono
+            g2d.fillPolygon(xPoints, yPoints, lados); //  Esta linea dibuja el polígono
         };
     }
 
-    private PaintingElement createRandomStripes() {
+    /**
+     * Método para generar rayas aleatorias.
+     */
+    private pintandoElemento crearRayasAleatorias() {
         return g2d -> {
             Random random = new Random();
-            g2d.setColor(getRandomColor()); // Establece el color de las rayas
-            int y = randomPosition(300); // Establece la posición y de las rayas
-            int rectHeight = randomSize(10, 50); // Establece la altura del rectángulo de las rayas
-            g2d.fillRect(0, y, 400, rectHeight); // Dibuja las rayas como un rectángulo vertical
+            g2d.setColor(obtenerColorAleatorio()); //  Esta linea establece el color de las rayas
+            int y = PosicionRandom(300); //  Esta linea establece la posición y de las rayas
+            int rectHeight = TamRandom(10, 50); // Esta linea establece la altura del rectángulo de las rayas
+            g2d.fillRect(0, y, 400, rectHeight); // Esta linea dibuja  las rayas como un rectángulo vertical
         };
     }
 
     /**
      * Método para obtener una posición aleatoria.
      */
-    private int randomPosition(int max) {
+    private int PosicionRandom(int max) {
         Random random = new Random();
-        return random.nextInt(max); // Devuelve un número aleatorio entre 0 y max
+        return random.nextInt(max); // Esta linea devuelve un número aleatorio entre 0 y max
     }
 
     /**
      * Método para obtener un tamaño aleatorio.
      */
-    private int randomSize(int min, int max) {
+    private int TamRandom(int min, int max) {
         Random random = new Random();
-        return random.nextInt(max - min + 1) + min; // Devuelve un número aleatorio entre min y max
+        return random.nextInt(max - min + 1) + min; // Esta linea devuelve un número aleatorio entre min y max
     }
 
     /**
      * Método para obtener el número de lados aleatorio de un polígono.
      */
-    private int randomSides(int min, int max) {
+    private int LadosRandom(int min, int max) {
         Random random = new Random();
-        return random.nextInt(max - min + 1) + min; // Devuelve un número aleatorio entre min y max
+        return random.nextInt(max - min + 1) + min; // Esta linea devuelve un número aleatorio entre min y max
     }
 
     /**
      * Método para obtener un color aleatorio.
      */
-    private Color getRandomColor() {
+    private Color obtenerColorAleatorio() {
         Random random = new Random();
         return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // Devuelve un color aleatorio
     }
